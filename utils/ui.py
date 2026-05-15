@@ -1,6 +1,6 @@
 import streamlit as st
 
-from data.themes import THEMES, TOTAL_LEVELS
+from data.themes import THEMES, TOTAL_LEVELS, resolve_image
 from game_logic import calculate_level_score, current_room, get_theme
 
 
@@ -287,7 +287,7 @@ def render_theme_selection():
         theme = THEMES[tid]
         with cols[i % 2]:
             st.markdown('<div class="theme-pick">', unsafe_allow_html=True)
-            st.image(theme["cover_image"], use_container_width=True)
+            st.image(resolve_image(theme["cover_key"]), use_container_width=True)
             st.markdown("</div>", unsafe_allow_html=True)
             st.markdown(f"**{theme['title']}**")
             st.caption(theme["tagline"])
@@ -311,7 +311,7 @@ def render_room_content():
     caption = f"Room {level_num} of {total} — {room['name']}"
     col_img, col_story = st.columns([1, 1], gap="large")
     with col_img:
-        st.image(room["image"], use_container_width=True, caption=caption)
+        st.image(resolve_image(room["image_key"]), use_container_width=True, caption=caption)
     with col_story:
         st.markdown(
             f'<div class="room-card"><h3>🚪 {room["name"]}</h3>'
@@ -357,7 +357,7 @@ def render_completion():
     st.balloons()
     st.markdown(f"## 🎉 You escaped {theme['title']}!")
     st.markdown(f"**Final score: {st.session_state.score:,}** — all {total} rooms cleared.")
-    st.image(theme["cover_image"], use_container_width=True)
+    st.image(resolve_image(theme["cover_key"]), use_container_width=True)
 
 
 def render_gameplay():
